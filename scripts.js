@@ -153,6 +153,12 @@ const getVideoSourceFromBase64 = (video_in_base64) => {
   return videoFile;
 
 }
+
+/*
+--------------------------------------------------------------------------------------
+função para criar área de player com título  e video, utilizando tag video do HTML5.
+-------------------------------------------------------------------------------------- 
+*/
 const createVideoPlayer = (dubbing) => {
   let video = document.createElement("video");
   video.src = getVideoSourceFromBase64(dubbing.dubbed_video);
@@ -171,6 +177,12 @@ const createVideoPlayer = (dubbing) => {
   }, 1000);
 
 }
+
+/*
+--------------------------------------------------------------------------------------
+função para assistir um vídeo selecionado na lista de vídeos cadastrados, que é chamada quando um link é ativado.
+--------------------------------------------------------------------------------------
+*/
 const watchDubbing = (event, videoId) => {
   event.preventDefault();
   const dubbing = dubbings.find((dubbing) => dubbing.id === videoId);
@@ -180,20 +192,35 @@ const watchDubbing = (event, videoId) => {
   cleanDynamicMsg();
 }
 
+/*
+--------------------------------------------------------------------------------------
+função para inserir mensagens dinâmicas informativas na aplicação.
+--------------------------------------------------------------------------------------
+*/
 const dynamicMsg = (msg) => {
   let msgArea = document.getElementById("msg");
   msgArea.classList.add("msg-area");
   msgArea.innerHTML = msg;
 }
 
+/*
+--------------------------------------------------------------------------------------
+função para limpar a mensagem dinâmica que foi inserida.
+--------------------------------------------------------------------------------------
+*/
 const cleanDynamicMsg = () => {
   let msgArea = document.getElementById("msg");
   setTimeout(() => {
     msgArea.classList.remove("msg-area");
     msgArea.innerHTML = "";
   }, 1000);
-
 }
+
+/*
+--------------------------------------------------------------------------------------
+função que cria uma barra de progresso para que o usuário perceba que a dublagem do vídeo está em andamento.
+--------------------------------------------------------------------------------------
+*/
 const progressBar = (value, progressInterval) => {
   const limitValue = 100;
   let p;
@@ -224,7 +251,11 @@ const progressBar = (value, progressInterval) => {
   }
 }
 
-btn.addEventListener("click", sendVideo);
+/*
+--------------------------------------------------------------------------------------
+função para criar a entrada de fonte que o vídeo será carregado (via url ou upload de arquivo).
+--------------------------------------------------------------------------------------
+*/
 const createVideoSource = (id) => {
   let source = {
     "source-file": function () {
@@ -259,6 +290,18 @@ const createVideoSource = (id) => {
   return source[id]();
 }
 
+/*
+--------------------------------------------------------------------------------------
+atrela a função de dublagem ao botão.
+--------------------------------------------------------------------------------------
+*/
+btn.addEventListener("click", sendVideo);
+
+/*
+--------------------------------------------------------------------------------------
+atrela a criação de entrada de fonte de acordo com a opção do usuário.
+--------------------------------------------------------------------------------------
+*/
 videoSources.forEach((radio) => {
   radio.addEventListener("click", (e) => {
     let source = createVideoSource(e.target.id);
@@ -269,4 +312,10 @@ videoSources.forEach((radio) => {
 
   });
 });
+
+/*
+--------------------------------------------------------------------------------------
+Chama a função para que a lista de vídeos dublados seja carregada assim que a página for aberta.
+--------------------------------------------------------------------------------------
+*/
 getDubbings();
