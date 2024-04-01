@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <title>DubVideos</title>
+</head>
+
+<body>
+    <!-- Cabeçalho de informações do sistema -->
+    <header class="row">
+        <img src="img/mic.svg" role="img" aria-label="Logo Dub Videos">
+        <p>DubVideo, informação sem fronteiras</p>
+    </header>
+    <main class="col">
+        <div class="heading">
+            <h1>Dublagem de vídeos</h1>
+        </div>
+        <div class="row">
+            <div class="col">
+                <section id="form-dub-video">
+                    <!-- form para dublar um novo vídeo -->
+                    <div class="row">
+                        <label for="original_language">Idioma do vídeo: </label>
+                        <select name="original_language" id="original_language">
+                            <option value="pt-BR">Português do Brasil</option>
+                            <option value="pt">Português Portugal</option>
+                            <option value="en-US">Inglês dos Estados Unidos</option>
+                            <option value="es">Espanhol</option>
+                            <option value="fr">Francês</option>
+                            <option value="ru-RU">Russo</option>
+                            <option value="iw">Hebraico</option>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <label for="target_language">Traduzir para: </label>
+                        <select name="target_language" id="target_language">
+                            <option value="en-US">Inglês dos Estados Unidos</option>
+                            <option value="pt-BR">Português do Brasil</option>
+                        </select>
+                    </div>
+                    <fieldset>
+                        <legend>Como deseja enviar o vídeo</legend>
+                        <div class="row">
+                            <input type="radio" name="video-source" id="source-file">
+                            <label for="source-file"> Fazer upload do vídeo</label>
+                        </div>
+                        <div class="row">
+                            <input type="radio" name="video-source" id="source-url">
+                            <label for="source-url"> Informar URL do vídeo</label>
+                        </div>
+                    </fieldset>
+                    <div id="source-area" class="row"></div>
+                    <button id="btn-dub">Dublar vídeo</button>
+                    <div id="progress"></div>
+                </section>
+                <section>
+                    <p id="msg" aria-live="polite"></p>
+                </section>
+            </div>
+            <div class="col">
+                <section id="video-list">
+                    <img src="img/loading.svg" role="img" alt="Carregando vídeos dublados...">
+                </section>
+
+            </div>
+        </div>
+        <section id="video-area"></section>
+    </main>
+    <footer>
+        <p>&copy; DubVideos - Todos os direitos reservados</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+
+</html>
