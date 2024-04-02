@@ -108,7 +108,7 @@ const getDubbings = () => {
   const videoList = document.getElementById("video-list");
   let list = `<div class="row">
   <img src="img/headset.svg" alt="">
-  <h2 class="heading">Dublagens cadastradas</h2>
+  <h2 class="heading" tabindex="-1">Dublagens cadastradas</h2>
     </div>
   <ul>`;
 
@@ -119,7 +119,7 @@ const getDubbings = () => {
         dubbings = data.dubbings;
         console.log(`${data.dubbings.length} dublagens retornadas`);
         data.dubbings.forEach((dubbing) => {
-          list += `<li><a onclick="watchDubbing(event, ${dubbing.id});" href="#video-${dubbing.id}">Assistir ${dubbing.video_title}</a></li>`;
+          list += `<li data-dubbing-id="video-${dubbing.id}"><a onclick="watchDubbing(event, ${dubbing.id});" href="#video-${dubbing.id}">Assistir ${dubbing.video_title}</a></li>`;
         });
       } else {
         console.log("Erro ao obter lista  vídeos dublados.");
@@ -169,8 +169,14 @@ const createVideoPlayer = (dubbing) => {
   h2.id = "video-" + dubbing.id;
   h2.setAttribute("tabindex", "-1");
   h2.classList.add("heading");
+  let button = document.createElement("button");
+  button.type = "button";
+  button.textContent = "Apagar";
+  button.setAttribute("aria-label", "Apagar vídeo " + dubbing.video_title);
+  button.onclick = () => confirm("Deseja realmente apagar o vídeo '" + dubbing.video_title + "'?") ? deleteDubbing(dubbing.id) : false;
   videoArea.textContent = "";
   videoArea.appendChild(h2);
+  videoArea.appendChild(button);
   videoArea.appendChild(video);
   setTimeout(() => {
     h2.focus();
@@ -290,6 +296,34 @@ const createVideoSource = (id) => {
   return source[id]();
 }
 
+/*
+--------------------------------------------------------------------------------------
+função para apagar vídeo dublado da base de dados via id.
+*/
+const deleteDubbing = (dubbing_id) => {
+  formData = new FormData();
+  formData.append("id", dubbing_id);
+  let options = {
+    method: "DELETE",
+    body: formData
+  };
+  fetch(urls.dubbings, options)
+    .then((data) => data.json())
+    .then((data) => {
+      if (data && data.id) {
+        alert("Vídeo apagado com sucesso.");
+        const videoListHeading = document.querySelector("#video-list h2");
+        const videoListItem = document.querySelector(`li[data-dubbing-id="video-${data.id}"]`);
+        videoListHeading ? videoListHeading.focus() : null;
+        videoListItem ? videoListItem.parentElement.removeChild(videoListItem) : null;
+        videoArea.textContent = "";
+      } else {
+        alert("Não foi possível apagar o vídeo.");
+      }
+    }).catch((error) => {
+      alert("Não foi possível apagar o vídeo.");
+    });
+}
 /*
 --------------------------------------------------------------------------------------
 atrela a função de dublagem ao botão.
