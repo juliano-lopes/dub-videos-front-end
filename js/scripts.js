@@ -49,14 +49,13 @@ const postVideo = async (videoSource, original_language, target_language) => {
 
   let value = 0;
   let progressInterval = setInterval(() => {
-    progressBar(++value, progressInterval);
+    createProgressBar(++value, progressInterval);
   }, 5000);
 
   dynamicMsg("Baixando e dublando vídeo, isso pode levar alguns minutos... Por favor, aguarde.");
   fetch(url, options)
     .then((response) => response.json())
     .then((data) => {
-      progressInterval = null;
       btn.disabled = false;
       dynamicMsg("Video dublado com sucesso");
       cleanDynamicMsg();
@@ -66,7 +65,7 @@ const postVideo = async (videoSource, original_language, target_language) => {
         return;
       }
       createVideoPlayer(data);
-      videoArea.setAttribute("data-video-status", "loaded");
+      removeProgressBar(value, progressInterval);
       getDubbings();
     })
     .catch((error) => {
@@ -171,8 +170,13 @@ const createVideoPlayer = (dubbing) => {
   h2.classList.add("heading");
   let button = document.createElement("button");
   button.type = "button";
-  button.textContent = "Apagar";
   button.setAttribute("aria-label", "Apagar vídeo " + dubbing.video_title);
+  let delSpan = document.createElement("span");
+  delSpan.classList.add("img-delete");
+  let span = document.createElement("span");
+  span.textContent = " Apagar vídeo";
+  button.appendChild(delSpan);
+  button.appendChild(span);
   button.onclick = () => confirm("Deseja realmente apagar o vídeo '" + dubbing.video_title + "'?") ? deleteDubbing(dubbing.id) : false;
   videoArea.textContent = "";
   videoArea.appendChild(h2);
@@ -227,7 +231,7 @@ const cleanDynamicMsg = () => {
 função que cria uma barra de progresso para que o usuário perceba que a dublagem do vídeo está em andamento.
 --------------------------------------------------------------------------------------
 */
-const progressBar = (value, progressInterval) => {
+const createProgressBar = (value) => {
   const limitValue = 100;
   let p;
   p = document.querySelector("#progress progress");
@@ -236,25 +240,31 @@ const progressBar = (value, progressInterval) => {
     p.setAttribute("max", limitValue);
     document.querySelector("#progress").appendChild(p);
   }
-  let status = document.querySelector('section[data-video-status="loaded"]');
-  if (status) {
-    if (value < 100) {
-      for (let i = value; i <= limitValue; i++) {
-        p.value = i;
-      }
-    } else {
-      p.value = limitValue;
-    }
-    clearInterval(progressInterval);
-    progressInterval = null;
+
+  if (value >= 95) {
+    value = 95;
+    p.value = value;
   } else {
-    if (value >= 95) {
-      value = 95;
-      p.value = value;
-    } else {
-      p.value = value;
-    }
+    p.value = value;
   }
+
+}
+
+/*
+--------------------------------------------------------------------------------------
+função que remove barra de progresso após dublagem do vídeo.
+--------------------------------------------------------------------------------------
+*/
+const removeProgressBar = (value, progressInterval) => {
+  const progressBar = document.querySelector("#progress progress");
+  const maxValue = 100;
+  clearInterval(progressInterval);
+  for (let i = value; i <= maxValue; i++) {
+    progressBar.value = i;
+  }
+  setTimeout(() => {
+    progressBar.parentElement.textContent = "";
+  }, 1000);
 }
 
 /*
