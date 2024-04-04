@@ -59,7 +59,7 @@ const postVideo = async (videoSource, original_language, target_language) => {
       btn.disabled = false;
       dynamicMsg("Video dublado com sucesso");
       cleanDynamicMsg();
-      console.log("dados: " + data);
+      console.log("dados: ", data);
       if (data.message) {
         msg.textContent = data.message;
         return;
@@ -121,7 +121,7 @@ const getDubbings = () => {
           list += `<li data-dubbing-id="video-${dubbing.id}"><a onclick="watchDubbing(event, ${dubbing.id});" href="#video-${dubbing.id}">Assistir ${dubbing.video_title}</a></li>`;
         });
       } else {
-        console.log("Erro ao obter lista  vídeos dublados.");
+        console.log("Erro ao obter lista  vídeos dublados.", data);
         list += `<li>Nenhum vídeo foi cadastrado ainda.</li>`;
       }
       list += `</ul>`;
@@ -129,6 +129,7 @@ const getDubbings = () => {
       videoList.innerHTML = list;
 
     }).catch((error) => {
+      console.log(`Não foi possível carregar a lista de vídeos cadastrados:`, error);
       list += `<li>Não foi possível carregar a lista de vídeos cadastrados.</li>`;
       list += `</ul>`;
       videoList.innerHTML = list;
