@@ -57,22 +57,24 @@ const postVideo = async (videoSource, original_language, target_language) => {
     .then((response) => response.json())
     .then((data) => {
       btn.disabled = false;
-      dynamicMsg("Video dublado com sucesso");
-      cleanDynamicMsg();
       console.log("dados: ", data);
       if (data.message) {
-        msg.textContent = data.message;
+        dynamicMsg(data.message);
+        removeProgressBar(value, progressInterval);
         return;
       }
-      createVideoPlayer(data);
+      dynamicMsg("Video dublado com sucesso");
+      cleanDynamicMsg();
       removeProgressBar(value, progressInterval);
+
+      createVideoPlayer(data);
       getDubbings();
     })
     .catch((error) => {
       btn.disabled = false;
+      removeProgressBar(value, progressInterval);
       console.error('Error:', error);
       dynamicMsg("Ocorreu um erro ao tentar dublar o vídeo.");
-      cleanDynamicMsg();
 
     });
 }
@@ -85,13 +87,13 @@ const postVideo = async (videoSource, original_language, target_language) => {
 */
 const sendVideo = () => {
   let videoSource = document.querySelector('input[type="radio"]:checked');
-  videoSource = document.getElementById(videoSource.id + "-video");
+  videoSource = videoSource ? document.getElementById(videoSource.id + "-video") : null;
 
   let original_language = document.getElementById("original_language");
   original_language = original_language.options[original_language.selectedIndex].value;
   let target_language = document.getElementById("target_language");
   target_language = target_language.options[target_language.selectedIndex].value;
-  if (videoSource.value === '') {
+  if (!videoSource || videoSource.value === '') {
     alert("Insira um vídeo para ser dublado!");
   } else {
     postVideo(videoSource, original_language, target_language);
