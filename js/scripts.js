@@ -52,7 +52,7 @@ const postVideo = async (videoSource, original_language, target_language) => {
     createProgressBar(++value, progressInterval);
   }, 5000);
 
-  dynamicMsg("Baixando e dublando vídeo, isso pode levar alguns minutos... Por favor, aguarde.");
+  dynamicMsg("Dublando vídeo, isso pode levar alguns minutos... Por favor, aguarde.");
   fetch(url, options)
     .then((response) => response.json())
     .then((data) => {
