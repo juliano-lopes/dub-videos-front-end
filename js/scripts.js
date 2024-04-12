@@ -259,9 +259,14 @@ função que remove barra de progresso após dublagem do vídeo.
 --------------------------------------------------------------------------------------
 */
 const removeProgressBar = (value, progressInterval) => {
-  const progressBar = document.querySelector("#progress progress");
-  const maxValue = 100;
   clearInterval(progressInterval);
+  const progressBar = document.querySelector("#progress progress");
+
+  if (!progressBar) {
+    return;
+  }
+
+  const maxValue = 100;
   for (let i = value; i <= maxValue; i++) {
     progressBar.value = i;
   }
