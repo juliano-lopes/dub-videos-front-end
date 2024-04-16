@@ -330,16 +330,28 @@ const deleteDubbing = (dubbing_id) => {
     .then((data) => {
       if (data && data.id) {
         alert("Vídeo apagado com sucesso.");
-        const videoListHeading = document.querySelector("#video-list h2");
         const videoListItem = document.querySelector(`li[data-dubbing-id="video-${data.id}"]`);
-        videoListHeading ? videoListHeading.focus() : null;
         videoListItem ? videoListItem.parentElement.removeChild(videoListItem) : null;
+        const videoListItems = document.querySelectorAll("#video-list ul li");
+
+        if ( videoListItems.length == 0) {
+          getDubbings();
+        }
+
         videoArea.textContent = "";
+        setTimeout(() => {
+          const videoList = document.querySelector("#video-list");
+          videoList.setAttribute("tabindex", "-1");
+          const videoListHeading = videoList.querySelector("h2");
+          videoListHeading ? videoListHeading.focus() : videoList.focus();
+        }, 1500);
+
       } else {
         alert("Não foi possível apagar o vídeo.");
       }
     }).catch((error) => {
       alert("Não foi possível apagar o vídeo.");
+      console.log("Erro ao apagar dublagem: " + error);
     });
 }
 /*
