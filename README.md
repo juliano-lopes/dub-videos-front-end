@@ -8,6 +8,8 @@
 * Abra o arquivo index.html no navegador
 
  ## Como testar
+ Primeiramente certifique-se de estar com a API rodando:  
+ [API Dub Videos](https://github.com/juliano-lopes/dub-videos-api)
  * para testar a rota de dublagem via upload de arquivo, [baixe este vídeo](https://drive.google.com/file/d/10UoBIsbx1xSGiYY-CP180pMAxoflLJWI/view?usp=sharing) e defina o idioma de origem para pt-BR e o idioma de destino para en-US;
  * para testar a rota via URL, utilize este link 
 https://www.youtube.com/shorts/jzQq0QrLJng  
