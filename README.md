@@ -1,4 +1,4 @@
-# Front-end para aplicação DubVideos
+# Componente 4 - Front-end para aplicação DubVideos
 APIs do projeto:
 * [Main DubVideos API](https://github.com/juliano-lopes/main-dub-videos-api)
 * [Transcription API](https://github.com/juliano-lopes/transcription-api)
