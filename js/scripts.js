@@ -181,9 +181,72 @@ const createVideoPlayer = (dubbing) => {
   button.appendChild(delSpan);
   button.appendChild(span);
   button.onclick = () => confirm("Deseja realmente apagar o vídeo '" + dubbing.video_title + "'?") ? deleteDubbing(dubbing.id) : false;
+  // botão para editar título do vídeo:
+  let edtContainer = document.createElement("div");
+  let edtButton = document.createElement("button");
+  edtButton.type = "button";
+  edtButton.textContent = "Editar";
+  edtButton.setAttribute("aria-label", "Editar vídeo " + dubbing.video_title);
+  edtButton.setAttribute("aria-expanded", "false");
+  let edtTitleLabel = document.createElement("label");
+  edtTitleLabel.setAttribute("for", "edt-input-title");
+  edtTitleLabel.textContent = "Insira novo título: ";
+  let edtTitle = document.createElement("input");
+  edtTitle.id = "edt-input-title";
+
+  let edtBtnSub = document.createElement("button");
+  edtBtnSub.textContent = "Salvar título";
+  edtContainer.append(edtButton);
+  let edtInnerContainer = document.createElement("div");
+  edtInnerContainer.setAttribute("style", "display: none;");
+  edtInnerContainer.id = "edt-inner-container";
+  edtInnerContainer.append(edtTitleLabel);
+  edtInnerContainer.append(edtTitle);
+  edtInnerContainer.append(edtBtnSub);
+  edtContainer.append(edtInnerContainer);
+
+  edtButton.onclick = () => {
+    if (edtInnerContainer.style.display == "none") {
+      edtInnerContainer.style.display = "block";
+      edtButton.setAttribute("aria-expanded", "true");
+    } else {
+      edtInnerContainer.style.display = "none";
+      edtButton.setAttribute("aria-expanded", "false");
+      edtTitle.value = "";
+
+    }
+  }
+  edtBtnSub.onclick = () => {
+    if (edtTitle.value == "") {
+      alert("O novo título não deve estar vazio.");
+      edtTitle.focus();
+      return;
+    }
+    let formData = new FormData();
+    formData.append("id", dubbing.id);
+    formData.append("video_title", edtTitle.value);
+    options = {
+      method: 'PUT',
+      body: formData
+    };
+    fetch(urls.dubbings, options).then((data) => data.json())
+      .then((data) => {
+        if (data && data.id) {
+          alert("Novo título salvo com sucesso.");
+          dubbing.video_title = data.video_title;
+          createVideoPlayer(dubbing);
+        } else {
+          alert("Não foi possível salvar o novo título...");
+        }
+      })
+      .catch((error) => {
+        alert("Ocorreu um erro ao tentar salvar o novo título...");
+      });
+  }
   videoArea.textContent = "";
   videoArea.appendChild(h2);
   videoArea.appendChild(button);
+  videoArea.appendChild(edtContainer);
   videoArea.appendChild(video);
   setTimeout(() => {
     h2.focus();
@@ -334,7 +397,7 @@ const deleteDubbing = (dubbing_id) => {
         videoListItem ? videoListItem.parentElement.removeChild(videoListItem) : null;
         const videoListItems = document.querySelectorAll("#video-list ul li");
 
-        if ( videoListItems.length == 0) {
+        if (videoListItems.length == 0) {
           getDubbings();
         }
 
