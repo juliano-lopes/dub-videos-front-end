@@ -40,4 +40,4 @@ https://www.youtube.com/shorts/jzQq0QrLJng
 e defina o idioma de origem como en-US e o idioma de destino como pt-BR.
 
 ## Apresentação da Aplicação
-* [Assista a o vídeo de aprensentação da aplicação Dub Videos](https://youtu.be/tfAVGTcRtCA)
+* [Assista a o vídeo de aprensentação da aplicação Dub Videos](https://youtu.be/ISk4ukqWnfg)
