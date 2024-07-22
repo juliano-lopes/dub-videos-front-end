@@ -1,4 +1,5 @@
 # Componente 4 - Front-end para aplicação DubVideos
+**Para executar o projeto com mais facilidade, você pode também seguir as instruções contidas no repositório do [Projeto Dub Videos](https://github.com/juliano-lopes/dub-videos-project) para poder subir todos os componentes utilizando docker-compose**.  
 APIs do projeto:
 * [Main DubVideos API](https://github.com/juliano-lopes/main-dub-videos-api)
 * [Transcription API](https://github.com/juliano-lopes/transcription-api)
